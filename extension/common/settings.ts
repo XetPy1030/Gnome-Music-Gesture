@@ -91,7 +91,7 @@ type Misc_Functions<K extends MiscSettingsKeys, T extends string> = {
 }
 
 type SettingsMiscFunctions = 
-    Misc_Functions<'forward-back-application-keyboard-shortcuts', 'a{s(ib)}'>
+    Misc_Functions<'forward-back-application-keyboard-shortcuts', 'a{s(ibb)}'>
     ;
 
 export type GioSettings =

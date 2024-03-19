@@ -29,7 +29,7 @@ enum SwipeGestureDirection {
 
 const SnapPointThreshold = 0.1;
 
-type AppForwardBackKeyBinds = Record<string, [ForwardBackKeyBinds, boolean]>;
+type AppForwardBackKeyBinds = Record<string, [ForwardBackKeyBinds, boolean, boolean]>;
 
 export class ForwardBackGestureExtension implements ISubExtension {
 	private _connectHandlers: number[];
@@ -162,12 +162,22 @@ export class ForwardBackGestureExtension implements ISubExtension {
 	 */
 	_getClutterKeyForFocusedApp(gestureDirection: SwipeGestureDirection) {
 		const focusApp = this._windowTracker.focus_app as Shell.App | null;
-		const keyBind = focusApp ? this._appForwardBackKeyBinds[focusApp.get_id()] : null;
+		let keyBind = focusApp ? this._appForwardBackKeyBinds[focusApp.get_id()] : null;
+		if (!keyBind) {
+			for (const keyBindIter of Object.values(this._appForwardBackKeyBinds)) {
+				const [, , isGlobal] = keyBindIter;
+				if (isGlobal) {
+					keyBind = keyBindIter;
+					break;
+				}
+			}
+		}
 
 		if (keyBind) {
 			// if keyBind[1] is true => reverse order or keys
-			const returnBackKey = (gestureDirection === SwipeGestureDirection.LeftToRight) !== keyBind[1];
-			switch (keyBind[0]) {
+			const [key, isReverse] = keyBind;
+			const returnBackKey = (gestureDirection === SwipeGestureDirection.LeftToRight) !== isReverse;
+			switch (key) {
 				case ForwardBackKeyBinds['Forward/Backward']:
 					return [returnBackKey ? Clutter.KEY_Back : Clutter.KEY_Forward];
 				case ForwardBackKeyBinds['Page Up/Down']:

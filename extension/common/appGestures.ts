@@ -84,8 +84,8 @@ const AppChooserDialog = registerClass(
 	},
 );
 
-/** type definition for gesture setting(keybind and reverse flag) for app */
-declare type AppGestureSettings = [ForwardBackKeyBinds, boolean];
+/** type definition for gesture setting(keybind, reverse flag and global flag) for app */
+declare type AppGestureSettings = [ForwardBackKeyBinds, boolean, boolean];
 
 /**
  * Class to create row for application in list to display gesture settings of app
@@ -96,13 +96,14 @@ const AppGestureSettingsRow = registerClass(
 	{
 		Properties: {},
 		Signals: {
-			'value-updated': { param_types: [GObject.TYPE_UINT, GObject.TYPE_BOOLEAN] },
+			'value-updated': { param_types: [GObject.TYPE_UINT, GObject.TYPE_BOOLEAN, GObject.TYPE_BOOLEAN] },
 			'remove-request': {},
 		},
 	},
 	class GIE_AppGestureSettingsRow extends Adw.ExpanderRow {
 		private _keyBindCombo: Adw.ComboRow;
 		private _reverseButton: Gtk.Switch;
+		private _isGlobalButton: Gtk.Switch;
 
 		/**
 		 * @param appGestureSettings value of current settings for app
@@ -112,7 +113,7 @@ const AppGestureSettingsRow = registerClass(
 			super({ title: markup_escape_text(app.get_display_name())});
 			this.add_prefix(getAppIconImage(app));
 
-			const [keyBind, reverse] = appGestureSettings;
+			const [keyBind, reverse, isGlobal] = appGestureSettings;
 
 			// keybinding combo row
 			this._keyBindCombo = new Adw.ComboRow({
@@ -132,6 +133,15 @@ const AppGestureSettingsRow = registerClass(
 			actionRow.add_suffix(this._reverseButton);
 			this.add_row(actionRow);
 
+			// isGlobal switch row
+			this._isGlobalButton = new Gtk.Switch({
+				active: isGlobal,
+				valign: Gtk.Align.CENTER,
+			});
+			actionRow = new Adw.ActionRow({ title: 'Global gesture' });
+			actionRow.add_suffix(this._isGlobalButton);
+			this.add_row(actionRow);
+
 			// remove setting row
 			const removeButton = new Gtk.Button({
 				label: 'Remove...',
@@ -147,12 +157,13 @@ const AppGestureSettingsRow = registerClass(
 			removeButton.connect('clicked', () => this.emit('remove-request'));
 			this._keyBindCombo.connect('notify::selected', this._onValueUpdated.bind(this));
 			this._reverseButton.connect('notify::active', this._onValueUpdated.bind(this));
+			this._isGlobalButton.connect('notify::active', this._onValueUpdated.bind(this));
 
 		}
 
 		/** function called internally whenever some setting is changed, emits external signal */
 		private _onValueUpdated() {
-			this.emit('value-updated', this._keyBindCombo.selected, this._reverseButton.active);
+			this.emit('value-updated', this._keyBindCombo.selected, this._reverseButton.active, this._isGlobalButton.active);
 		}
 	},
 );
@@ -263,8 +274,8 @@ const AppKeybindingGesturePrefsGroup = registerClass(
 
 			// callbacks for setting updates and remove request
 			appRow.connect('remove-request', () => this._requestRemoveAppGestureRow(appId));
-			appRow.connect('value-updated', (_source, keyBind, reverse) => {
-				this._setAppGestureSetting(appId, [keyBind, reverse]);
+			appRow.connect('value-updated', (_source, keyBind, reverse, isGlobal) => {
+				this._setAppGestureSetting(appId, [keyBind, reverse, isGlobal]);
 			});
 
 			// re-add add-appbutton at the end
@@ -325,7 +336,7 @@ const AppKeybindingGesturePrefsGroup = registerClass(
 
 			if (!val) {
 				// this is case when new app was selected for gesture
-				val = [ForwardBackKeyBinds.Default, false];
+				val = [ForwardBackKeyBinds.Default, false, false];
 				this._setAppGestureSetting(appId, val);
 			}
 
@@ -340,7 +351,7 @@ const AppKeybindingGesturePrefsGroup = registerClass(
 
 		/** Updates extension settings */
 		private _updateExtensionSettings() {
-			const glibVariant = new GLib.Variant('a{s(ib)}', this._cachedSettings);
+			const glibVariant = new GLib.Variant('a{s(ibb)}', this._cachedSettings);
 			this._settings.set_value('forward-back-application-keyboard-shortcuts', glibVariant);
 		}
 
