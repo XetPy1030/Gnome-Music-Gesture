@@ -12,6 +12,7 @@ import { ShowDesktopExtension } from './src/pinchGestures/showDesktop';
 import { SnapWindowExtension } from './src/snapWindow';
 import * as DBusUtils from './src/utils/dbus';
 import * as VKeyboard from './src/utils/keyboard';
+import {MusicPauseExtension} from './src/pinchGestures/musicPause';
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
@@ -106,6 +107,11 @@ class Extension {
 		const closeDocumentFingers = pinchToFingersMap.get(PinchGestureType.CLOSE_DOCUMENT);
 		if (closeDocumentFingers?.length)
 			this._extensions.push(new CloseWindowExtension(closeDocumentFingers, PinchGestureType.CLOSE_DOCUMENT));
+
+		// pinch to pause music
+		const pauseMusicFingers = pinchToFingersMap.get(PinchGestureType.PAUSE_MUSIC);
+		if (pauseMusicFingers?.length)
+			this._extensions.push(new MusicPauseExtension(pauseMusicFingers));
 
 		this._extensions.forEach(extension => extension.apply?.());
 	}
