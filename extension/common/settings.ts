@@ -27,6 +27,7 @@ export enum ForwardBackKeyBinds {
 }
 
 export type BooleanSettingsKeys =
+    'default-improved-pause' |
     'default-session-workspace' |
     'default-overview' |
     'allow-minimize-window' |

@@ -5,7 +5,7 @@ import {getVirtualKeyboard, IVirtualKeyboard} from '../utils/keyboard';
 import St from '@gi-types/st';
 import {imports} from 'gnome-shell';
 import {easeActor} from '../utils/environment';
-import {WIGET_SHOWING_DURATION} from '../../constants';
+import {ExtSettings, WIGET_SHOWING_DURATION} from '../../constants';
 
 const Main = imports.ui.main;
 const Util = imports.misc.util;
@@ -28,7 +28,7 @@ export class MusicPauseExtension implements ISubExtension {
 	constructor(nfingers: number[]) {
 		this._preview = new St.Widget({
 			reactive: false,
-			style_class: 'gie-close-window-preview',
+			style_class: ExtSettings.DEFAULT_IMPROVED_PAUSE ? 'gie-music-pause-preview-image' : 'gie-music-pause-preview',
 			visible: false,
 		});
 		this._preview.set_pivot_point(0.5, 0.5);

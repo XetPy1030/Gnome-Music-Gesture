@@ -30,6 +30,7 @@ export const OverviewControlsState = {
 };
 
 export const ExtSettings = {
+	DEFAULT_IMPROVED_PAUSE: false,
 	DEFAULT_SESSION_WORKSPACE_GESTURE: false,
 	DEFAULT_OVERVIEW_GESTURE: false,
 	ALLOW_MINIMIZE_WINDOW: false,

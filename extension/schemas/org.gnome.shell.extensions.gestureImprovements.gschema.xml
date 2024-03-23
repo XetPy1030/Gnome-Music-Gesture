@@ -27,6 +27,10 @@
     <key name="hold-swipe-delay-duration" type="i">
       <default>100</default>
     </key>
+    <key name='default-improved-pause' type='b'>
+      <default>false</default>
+      <description>If true, you can see DIMA</description>
+    </key>
     <key name='default-session-workspace' type='b'>
       <default>false</default>
       <description>If true, use 3-fingers to switch workspace, 4 for windows</description>

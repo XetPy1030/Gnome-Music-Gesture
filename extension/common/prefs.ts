@@ -77,6 +77,7 @@ function bindPrefsSettings(builder: GtkBuilder, settings: Gio.Settings) {
 	bind_int_value('alttab-delay', settings, builder);
 	bind_int_value('hold-swipe-delay-duration', settings, builder);
 
+	bind_boolean_value('default-improved-pause', settings, builder);
 	bind_boolean_value('default-session-workspace', settings, builder, Gio.SettingsBindFlags.INVERT_BOOLEAN);
 	bind_boolean_value('default-overview', settings, builder, Gio.SettingsBindFlags.INVERT_BOOLEAN);
 	bind_boolean_value('follow-natural-scroll', settings, builder);

@@ -37,6 +37,12 @@
     border-radius: 12px;
 }
 
+.gie-music-pause-preview-image {
+    background-image: url("https://i.postimg.cc/qMrWJ6RJ/photo-2022-11-20-16-16-08.jpg");
+    border: 1px solid rgba(255, 128, 128);
+    border-radius: 12px;
+}
+
 .gie-music-pause-preview {
     background-color: rgba(255, 219, 77, 0.5);
     border: 1px solid rgba(255, 128, 128);

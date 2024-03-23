@@ -22,6 +22,19 @@
       <object class="AdwPreferencesGroup">
         <property name="title">Swipe Gestures</property>
 
+        <!-- Use super pause for DIMA -->
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">IMPROVED PAUSE ANIMATION</property>
+            <child>
+              <object class="GtkSwitch" id="default-improved-pause">
+                <property name="valign">center</property>
+                <property name="active">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
         <!-- Use default(4-finger) for session overview navigation -->
         <child>
           <object class="AdwActionRow">

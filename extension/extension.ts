@@ -125,6 +125,7 @@ class Extension {
 
 	_initializeSettings() {
 		if (this.settings) {
+			ExtSettings.DEFAULT_IMPROVED_PAUSE = this.settings.get_boolean('default-improved-pause');
 			ExtSettings.DEFAULT_SESSION_WORKSPACE_GESTURE = this.settings.get_boolean('default-session-workspace');
 			ExtSettings.DEFAULT_OVERVIEW_GESTURE = this.settings.get_boolean('default-overview');
 			ExtSettings.ALLOW_MINIMIZE_WINDOW = this.settings.get_boolean('allow-minimize-window');
